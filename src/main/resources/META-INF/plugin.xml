@@ -1,0 +1,27 @@
+<idea-plugin>
+    <id>ru.karvozavr.plugin.astinfo</id>
+    <name>AST info</name>
+    <vendor email="dmitrii.abramov@outlook.com">Dmitrii Abramov</vendor>
+
+    <description><![CDATA[
+    This plugin is intended to display AST information of a code fragment.
+    ]]></description>
+
+    <depends>com.intellij.modules.lang</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow id="AST Info" secondary="true" icon="/ASTInfoToolWindow/plus.png" anchor="bottom"
+                    factoryClass="ru.karvozavr.plugin.astinfo.toolwindow.ASTInfoToolWindowFactory"/>
+        <projectService serviceInterface="ru.karvozavr.plugin.astinfo.services.AstInfoService"
+                        serviceImplementation="ru.karvozavr.plugin.astinfo.services.ASTInfoServiceImpl" />
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+        <group id="astinfo.SampleMenu" text="ASTInfo" description="ASTInfo menu">
+            <add-to-group group-id="MainMenu" anchor="last"/>
+            <action id="astinfo.showInfo" class="ru.karvozavr.plugin.astinfo.ASTInfoAction" text="AST Info Action"
+                    description="Show AST info"/>
+        </group>
+    </actions>
+</idea-plugin>
