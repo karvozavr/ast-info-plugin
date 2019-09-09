@@ -4,7 +4,7 @@
     <vendor email="dmitrii.abramov@outlook.com">Dmitrii Abramov</vendor>
 
     <description><![CDATA[
-    This plugin is intended to display AST information of a code fragment.
+    This plugin is intended to display AST information of selected code fragment.
     ]]></description>
 
     <depends>com.intellij.modules.lang</depends>

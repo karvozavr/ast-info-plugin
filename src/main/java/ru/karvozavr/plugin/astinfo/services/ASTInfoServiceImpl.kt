@@ -1,10 +1,12 @@
 package ru.karvozavr.plugin.astinfo.services
 
+import com.intellij.codeInsight.ExceptionUtil
 import com.intellij.psi.JavaElementVisitor
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReferenceExpression
 import com.intellij.psi.PsiVariable
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.util.PsiUtil
 import ru.karvozavr.plugin.astinfo.ASTInfoData
 import ru.karvozavr.plugin.astinfo.ASTInfoModel
 import ru.karvozavr.plugin.astinfo.toolwindow.ASTInfoToolWindow
@@ -24,23 +26,11 @@ class ASTInfoServiceImpl : AstInfoService {
     }
 
     private fun getInfoFromElements(elements: List<PsiElement>): ASTInfoData {
-        val visitor = object : JavaElementVisitor() {
-            var declarations = 0
-            var usages = 0
-            var exceptions = 0
-
-            override fun visitVariable(variable: PsiVariable?) {
-                super.visitVariable(variable)
-                declarations++
-            }
-
-            override fun visitReferenceExpression(expression: PsiReferenceExpression?) {
-                super.visitReferenceExpression(expression)
-                usages++
-            }
-        }
-        PsiTreeUtil.processElements({ it.accept(visitor); true }, elements.toTypedArray())
-        return ASTInfoData(visitor.declarations, visitor.usages, visitor.exceptions)
+        val visitor = ASTVariableInfoVisitor()
+        val elementsArray = elements.toTypedArray()
+        PsiTreeUtil.processElements({ it.accept(visitor); true }, elementsArray)
+        val exceptions = ExceptionUtil.getThrownExceptions(elementsArray).size
+        return ASTInfoData(visitor.declarations, visitor.usages, exceptions)
     }
 
     private fun extractContextBySelection(beginElement: PsiElement, endElement: PsiElement): List<PsiElement> {
@@ -61,6 +51,24 @@ class ASTInfoServiceImpl : AstInfoService {
             listOf(element)
         } else {
             element.children.slice(from..to)
+        }
+    }
+
+    private class ASTVariableInfoVisitor : JavaElementVisitor() {
+
+        var declarations = 0
+        var usages = 0
+
+        override fun visitVariable(variable: PsiVariable) {
+            super.visitVariable(variable)
+            declarations++
+        }
+
+        override fun visitReferenceExpression(expression: PsiReferenceExpression) {
+            super.visitReferenceExpression(expression)
+            if (PsiUtil.isAccessedForReading(expression)) {
+                usages++
+            }
         }
     }
 }
