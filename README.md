@@ -8,7 +8,7 @@ This plugin shows AST of selected code fragment and following statistics:
 - Number of **read** variable accesses in selection
 - Number of exceptions which may be thrown during execution of selected fragment
 
-![screenshot](https://github.com/karvozavr/ast-info-plugin/images/screenshot.png)
+![screenshot](images/screenshot.png)
 
 ## Usage
 
