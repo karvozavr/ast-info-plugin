@@ -4,6 +4,7 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.psi.PsiElement;
 import com.intellij.ui.components.JBList;
 import com.intellij.ui.treeStructure.Tree;
+import ru.karvozavr.plugin.astinfo.ASTInfoData;
 import ru.karvozavr.plugin.astinfo.ASTInfoModel;
 
 import javax.swing.*;
@@ -19,26 +20,27 @@ public class ASTInfoToolWindow {
 
     public ASTInfoToolWindow(ToolWindow toolWindow) {
         this.toolWindow = toolWindow;
-        refreshToolWindowButton.addActionListener(e -> update());
-        this.update();
+        refreshToolWindowButton.addActionListener(e -> reset());
+        this.reset();
     }
 
     public JPanel getContent() {
         return content;
     }
 
-    private void update() {
-        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-        model.setRoot(new DefaultMutableTreeNode("Selection"));
-    }
-
     public void updateView(ASTInfoModel model) {
-        update();
+        reset();
         DefaultTreeModel treeModel = (DefaultTreeModel) tree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
         model.getPsiElements().forEach(node -> updateModelWithNode(node, treeModel, root));
         infoList.setListData(model.getInfoData().toList());
         toolWindow.show(null);
+    }
+
+    private void reset() {
+        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+        model.setRoot(new DefaultMutableTreeNode("Selection"));
+        infoList.setListData(new ASTInfoData(0, 0, 0).toList());
     }
 
     private void updateModelWithNode(PsiElement element, DefaultTreeModel model, DefaultMutableTreeNode parent) {

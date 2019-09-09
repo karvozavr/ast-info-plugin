@@ -23,7 +23,7 @@ class ASTInfoServiceImpl : AstInfoService {
         window?.updateView(ASTInfoModel(psiElements, info))
     }
 
-    fun getInfoFromElements(elements: List<PsiElement>): ASTInfoData {
+    private fun getInfoFromElements(elements: List<PsiElement>): ASTInfoData {
         val visitor = object : JavaElementVisitor() {
             var declarations = 0
             var usages = 0
@@ -43,7 +43,7 @@ class ASTInfoServiceImpl : AstInfoService {
         return ASTInfoData(visitor.declarations, visitor.usages, visitor.exceptions)
     }
 
-    fun extractContextBySelection(beginElement: PsiElement, endElement: PsiElement): List<PsiElement> {
+    private fun extractContextBySelection(beginElement: PsiElement, endElement: PsiElement): List<PsiElement> {
         return if (beginElement == endElement) {
             listOf(beginElement)
         } else {
