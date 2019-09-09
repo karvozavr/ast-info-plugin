@@ -31,14 +31,14 @@ public class ASTInfoToolWindow {
         DefaultTreeModel treeModel = (DefaultTreeModel) tree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
         model.getPsiElements().forEach(node -> updateModelWithNode(node, treeModel, root));
-        infoList.setListData(model.getInfoData().toList());
+        infoList.setListData(model.getInfoData().toArray());
         toolWindow.activate(() -> toolWindow.show(null));
     }
 
     private void reset() {
         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
         model.setRoot(new DefaultMutableTreeNode("Selection"));
-        infoList.setListData(new ASTInfoData(0, 0, 0).toList());
+        infoList.setListData(new ASTInfoData(0, 0, 0).toArray());
     }
 
     private void updateModelWithNode(PsiElement element, DefaultTreeModel model, DefaultMutableTreeNode parent) {

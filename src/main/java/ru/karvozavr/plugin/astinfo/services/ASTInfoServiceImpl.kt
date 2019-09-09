@@ -11,7 +11,6 @@ import ru.karvozavr.plugin.astinfo.ASTInfoData
 import ru.karvozavr.plugin.astinfo.ASTInfoModel
 import ru.karvozavr.plugin.astinfo.toolwindow.ASTInfoToolWindow
 
-
 class ASTInfoServiceImpl : AstInfoService {
 
     var window: ASTInfoToolWindow? = null
@@ -21,9 +20,9 @@ class ASTInfoServiceImpl : AstInfoService {
     }
 
     override fun astInfoBySelection(beginElement: PsiElement, endElement: PsiElement) {
-        val psiElements = extractContextBySelection(beginElement, endElement)
-        val info = getInfoFromElements(psiElements)
-        window?.updateView(ASTInfoModel(psiElements, info))
+        val selectionContext = extractContextBySelection(beginElement, endElement)
+        val info = getInfoFromElements(selectionContext)
+        window?.updateView(ASTInfoModel(selectionContext, info))
     }
 
     private fun getInfoFromElements(elements: List<PsiElement>): ASTInfoData {

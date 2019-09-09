@@ -4,7 +4,7 @@ import com.intellij.psi.PsiElement
 
 data class ASTInfoData(val declarations: Int, val usages: Int, val exceptions: Int) {
 
-    fun toList(): Array<String> {
+    fun toArray(): Array<String> {
         return arrayOf("Declarations: $declarations", "Usages: $usages", "Exceptions: $exceptions")
     }
 }
