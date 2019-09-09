@@ -12,7 +12,7 @@ This plugin shows AST of selected code fragment and following statistics:
 
 ## Usage
 
-Simplest way to run the plugin is:  
+The easiest way to run the plugin is:  
 `./gradlew runIde`
 
 To display AST and info for selection:
