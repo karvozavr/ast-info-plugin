@@ -12,7 +12,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 public class ASTInfoToolWindow {
-    private JButton refreshToolWindowButton;
     private JPanel content;
     private Tree tree;
     private JBList<String> infoList;
@@ -20,7 +19,6 @@ public class ASTInfoToolWindow {
 
     public ASTInfoToolWindow(ToolWindow toolWindow) {
         this.toolWindow = toolWindow;
-        refreshToolWindowButton.addActionListener(e -> reset());
         this.reset();
     }
 
