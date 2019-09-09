@@ -12,6 +12,11 @@ This plugin shows AST of selected code fragment and following statistics:
 
 ## Usage
 
+Simplest way to run the plugin is:  
+`./gradlew runIde`
+
+To display AST and info for selection:
+
 1. Select some code in editor.
 2. Press `AST Info` button under `AST Info` button.
 3. Tool Window with AST and statistics will appear.
