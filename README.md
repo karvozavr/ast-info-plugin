@@ -1,5 +1,7 @@
 # AST Info plugin
 
+Author - Dmitrii Abramov.
+
 This plugin shows AST of selected code fragment and following statistics:
 
 - Number of variable declarations inside selection
