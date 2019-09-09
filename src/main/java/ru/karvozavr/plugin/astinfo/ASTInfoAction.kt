@@ -6,6 +6,7 @@ import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.ui.Messages
+import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.psi.PsiFile
 import ru.karvozavr.plugin.astinfo.services.AstInfoService
 import kotlin.math.max
@@ -30,9 +31,11 @@ class ASTInfoAction : AnAction("AST Info") {
         val project = event.project
         if (beginElement != null && endElement != null && project != null) {
             val contextExtractorService = ServiceManager.getService(project, AstInfoService::class.java)
-            contextExtractorService?.astInfoBySelection(beginElement, endElement)
+            ToolWindowManager.getInstance(project).getToolWindow("AST Info").show {
+                contextExtractorService?.astInfoBySelection(beginElement, endElement)
+            }
         } else {
-            Messages.showMessageDialog( "Error getting context for selection", "Error", Messages.getErrorIcon())
+            Messages.showMessageDialog("Error getting context for selection", "Error", Messages.getErrorIcon())
         }
     }
 }

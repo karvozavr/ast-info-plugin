@@ -32,7 +32,7 @@ public class ASTInfoToolWindow {
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
         model.getPsiElements().forEach(node -> updateModelWithNode(node, treeModel, root));
         infoList.setListData(model.getInfoData().toList());
-        toolWindow.show(null);
+        toolWindow.activate(() -> toolWindow.show(null));
     }
 
     private void reset() {

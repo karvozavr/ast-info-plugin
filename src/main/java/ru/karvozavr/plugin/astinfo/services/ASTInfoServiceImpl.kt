@@ -11,6 +11,7 @@ import ru.karvozavr.plugin.astinfo.ASTInfoData
 import ru.karvozavr.plugin.astinfo.ASTInfoModel
 import ru.karvozavr.plugin.astinfo.toolwindow.ASTInfoToolWindow
 
+
 class ASTInfoServiceImpl : AstInfoService {
 
     var window: ASTInfoToolWindow? = null
