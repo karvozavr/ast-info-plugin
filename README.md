@@ -18,7 +18,7 @@ The easiest way to run the plugin is:
 To display AST and info for selection:
 
 1. Select some code in editor.
-2. Press `AST Info` button under `AST Info` button.
+2. Press `AST Info` button under `AST Info` top-bar entry.
 3. Tool Window with AST and statistics will appear.
 4. To see info for another code fragment: GOTO 1.
 
