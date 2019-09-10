@@ -13,7 +13,7 @@ import ru.karvozavr.plugin.astinfo.toolwindow.ASTInfoToolWindow
 
 class ASTInfoServiceImpl : AstInfoService {
 
-    var window: ASTInfoToolWindow? = null
+    private var window: ASTInfoToolWindow? = null
 
     override fun registerASTInfoToolWindow(window: ASTInfoToolWindow) {
         this.window = window

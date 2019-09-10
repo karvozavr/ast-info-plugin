@@ -2,6 +2,7 @@ package ru.karvozavr.plugin.astinfo.toolwindow;
 
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.ui.components.JBList;
 import com.intellij.ui.treeStructure.Tree;
 import ru.karvozavr.plugin.astinfo.ASTInfoData;
@@ -43,7 +44,9 @@ public class ASTInfoToolWindow {
 
     private void updateModelWithNode(PsiElement element, DefaultTreeModel model, DefaultMutableTreeNode parent) {
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(element.toString());
-        model.insertNodeInto(node, parent, parent.getChildCount());
+        if (!(element instanceof PsiWhiteSpace)) {
+            model.insertNodeInto(node, parent, parent.getChildCount());
+        }
         for (PsiElement child : element.getChildren()) {
             updateModelWithNode(child, model, node);
         }
