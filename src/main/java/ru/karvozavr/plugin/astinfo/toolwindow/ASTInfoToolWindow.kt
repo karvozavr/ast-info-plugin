@@ -1,54 +1,57 @@
-package ru.karvozavr.plugin.astinfo.toolwindow;
+package ru.karvozavr.plugin.astinfo.toolwindow
 
-import com.intellij.openapi.wm.ToolWindow;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiWhiteSpace;
-import com.intellij.ui.components.JBList;
-import com.intellij.ui.treeStructure.Tree;
-import ru.karvozavr.plugin.astinfo.ASTInfoData;
-import ru.karvozavr.plugin.astinfo.ASTInfoModel;
+import com.intellij.openapi.wm.ToolWindow
+import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiWhiteSpace
+import com.intellij.ui.components.JBList
+import com.intellij.ui.treeStructure.Tree
+import ru.karvozavr.plugin.astinfo.ASTInfoData
+import ru.karvozavr.plugin.astinfo.ASTInfoModel
+import javax.swing.JPanel
+import javax.swing.tree.DefaultMutableTreeNode
+import javax.swing.tree.DefaultTreeModel
 
-import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
+class ASTInfoToolWindow(private val toolWindow: ToolWindow) {
 
-public class ASTInfoToolWindow {
-    private JPanel content;
-    private Tree tree;
-    private JBList<String> infoList;
-    private ToolWindow toolWindow;
+    private lateinit var content: JPanel
+    private lateinit var tree: Tree
+    private lateinit var infoList: JBList<String>
 
-    public ASTInfoToolWindow(ToolWindow toolWindow) {
-        this.toolWindow = toolWindow;
-        this.reset();
+    private val ignoredNodeTypes = listOf<Class<out Any>>(PsiWhiteSpace::class.java)
+
+    init {
+        this.reset()
     }
 
-    public JPanel getContent() {
-        return content;
+    fun getToolWindowContent(): JPanel {
+        return content
     }
 
-    public void updateView(ASTInfoModel model) {
-        reset();
-        DefaultTreeModel treeModel = (DefaultTreeModel) tree.getModel();
-        DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
-        model.getPsiElements().forEach(node -> updateModelWithNode(node, treeModel, root));
-        infoList.setListData(model.getInfoData().toArray());
-        toolWindow.activate(() -> toolWindow.show(null));
+    fun updateView(model: ASTInfoModel) {
+        reset()
+
+        val treeModel = tree.model as DefaultTreeModel
+        val root = treeModel.root as DefaultMutableTreeNode
+
+        model.psiElements.forEach { node -> updateModelWithNode(node, treeModel, root) }
+        infoList.setListData(model.infoData.toArray())
+
+        toolWindow.activate { toolWindow.show(null) }
     }
 
-    private void reset() {
-        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-        model.setRoot(new DefaultMutableTreeNode("Selection"));
-        infoList.setListData(new ASTInfoData(0, 0, 0).toArray());
+    private fun reset() {
+        val model = tree.model as DefaultTreeModel
+        model.setRoot(DefaultMutableTreeNode("Selection"))
+        infoList.setListData(ASTInfoData(0, 0, 0).toArray())
     }
 
-    private void updateModelWithNode(PsiElement element, DefaultTreeModel model, DefaultMutableTreeNode parent) {
-        DefaultMutableTreeNode node = new DefaultMutableTreeNode(element.toString());
-        if (!(element instanceof PsiWhiteSpace)) {
-            model.insertNodeInto(node, parent, parent.getChildCount());
+    private fun updateModelWithNode(element: PsiElement, model: DefaultTreeModel, parent: DefaultMutableTreeNode) {
+        val node = DefaultMutableTreeNode(element.toString())
+
+        if (ignoredNodeTypes.none { it.isInstance(element) }) {
+            model.insertNodeInto(node, parent, parent.childCount)
         }
-        for (PsiElement child : element.getChildren()) {
-            updateModelWithNode(child, model, node);
-        }
+
+        element.children.forEach { updateModelWithNode(it, model, node) }
     }
 }

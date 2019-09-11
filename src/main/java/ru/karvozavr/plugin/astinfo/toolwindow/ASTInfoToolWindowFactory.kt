@@ -15,7 +15,7 @@ class ASTInfoToolWindowFactory : ToolWindowFactory {
         contextExtractorService?.registerASTInfoToolWindow(astInfoToolWindow)
 
         val contentFactory = ContentFactory.SERVICE.getInstance()
-        val content = contentFactory.createContent(astInfoToolWindow.content, "", false)
+        val content = contentFactory.createContent(astInfoToolWindow.getToolWindowContent(), "", false)
         toolWindow.contentManager.addContent(content)
     }
 }
